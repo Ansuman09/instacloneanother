@@ -6,6 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - /home/ansuman/Documents/instaclone/target/:/app/
+      - target:/app/
     network_mode: bridge
 
