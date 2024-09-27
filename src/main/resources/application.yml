@@ -1,0 +1,7 @@
+server:
+  port: 8080
+  
+app:
+  upload-dir: /path/to/upload
+  static-images-location: "/home/ansuman/Documents/InstaImageBucket/"
+  sql-host: localhost
