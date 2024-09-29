@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ImageController {
 
     
-    private final Path imageDirectory = Paths.get("fileLocationHere");
+    private final Path imageDirectory = Paths.get("file location / bucket location");
 
     @GetMapping("/images/{fileName}")
     public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {

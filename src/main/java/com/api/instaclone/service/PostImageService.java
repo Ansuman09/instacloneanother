@@ -8,4 +8,5 @@ public interface PostImageService {
     void addPostImage(int post_id,String imageName);
     List<PostImage> getPostImagesByOwner(String username);
     PostImage getPostImageByPostId(int id);
+    // List
 }

@@ -50,6 +50,31 @@ public class UserInfoRepository {
         return userinfo;
     }
 
+
+    public Userinfo getUserinfoByName(String name){
+        Userinfo userinfo = new Userinfo();
+        String sql = "SELECT * FROM userinfo WHERE username=?";
+        try {
+            
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, name);
+            ResultSet resultSet= preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Integer userid = resultSet.getInt("userid");
+                String username = resultSet.getString("username");
+                String profileimage= resultSet.getString("profile_image");
+                
+                userinfo = new Userinfo(userid,username,profileimage);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return userinfo;
+    }
+
+
     public Userinfo getUserinfo(String name, int visitorId){
         Userinfo userinfo = null; // Initialize as null
         String sql = "SELECT * FROM userinfo WHERE username=?";
