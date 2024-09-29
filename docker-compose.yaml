@@ -6,6 +6,10 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
+<<<<<<< HEAD
       - target/:/app/
+=======
+      - target:/app/
+>>>>>>> 6e982eca647ec28ff9376d025541dd96adc29d67
     network_mode: bridge
 
