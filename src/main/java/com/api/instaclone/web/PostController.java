@@ -10,6 +10,7 @@ import com.api.instaclone.service.PostService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.io.Console;
 import java.io.File;
@@ -17,12 +18,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,34 +67,57 @@ public class PostController {
     
 
     @PostMapping("/addpost")
-public ResponseEntity<HttpStatus> postAddPost(
-    @RequestParam("owner_id") int owner_id,
-    @RequestParam("description") String description,
-    @RequestPart("image") MultipartFile imageFile) {
+    public ResponseEntity<HttpStatus> postAddPost(
+        @RequestParam("owner_id") int owner_id,
+        @RequestParam("description") String description,
+        @RequestPart("image") MultipartFile imageFile) {
 
-    System.out.println("Got image");
-    File directory = new File(UPLOAD_DIR);
+        System.out.println("Got image");
+        File directory = new File(UPLOAD_DIR);
 
-    if (!directory.exists()) {
-        directory.mkdirs();
-    }
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
 
-    String originalFileName = imageFile.getOriginalFilename();
-    String newFileName = System.currentTimeMillis() + "_" + originalFileName;
-    Path filePath = Paths.get(UPLOAD_DIR, newFileName);
+        String originalFileName = imageFile.getOriginalFilename();
+        String newFileName = System.currentTimeMillis() + "_" + originalFileName;
+        Path filePath = Paths.get(UPLOAD_DIR, newFileName);
 
 
-    try {
-        Files.copy(imageFile.getInputStream(), filePath);
-        Post post = new Post(owner_id, description);
-        postService.addPost(post,newFileName);
+        try {
+            Files.copy(imageFile.getInputStream(), filePath);
+            Post post = new Post(owner_id, description);
+            postService.addPost(post,newFileName);
 
-    } catch (IOException e) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     return new ResponseEntity<>(HttpStatus.CREATED);
 }
+
+    @GetMapping("/admin/api")
+    public ResponseEntity<String> getTestMethod() {
+        Collection<String> authorities=SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+        .map(authority->authority.getAuthority().toString()).collect(Collectors.toList());
+
+        boolean isAdmin=false;
+        for (var authority:authorities){
+            System.out.println(authority);
+            if (authority.equals("ROLE_ADMIN")){
+                System.out.println("confirmed user is admin");
+                isAdmin=true;
+            }
+        }
+        String statement="Hy this is admin";
+        if (isAdmin){
+        return new ResponseEntity<>(statement,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("you are not admin",HttpStatus.FORBIDDEN);
+        }
+    }
+    
 
     
 }

@@ -18,6 +18,7 @@ import org.springframework.web.filter.CorsFilter;
 import com.api.instaclone.security.filter.AuthenticationFilter;
 import com.api.instaclone.security.filter.JWTAuthorizationFilter;
 import com.api.instaclone.security.manager.CustomAuthenticationManager;
+import com.api.instaclone.service.RoleService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,9 +27,12 @@ public class SecurityConfig {
     @Autowired
     CustomAuthenticationManager authenticationManager;
 
+    @Autowired
+    RoleService roleService;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager,roleService);
         authenticationFilter.setFilterProcessesUrl("/authenticate");
         http
             // .cors(cors->cors.disable())
@@ -39,6 +43,7 @@ public class SecurityConfig {
                             // .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                             .requestMatchers("/userinfo/getuserid/forlogin/***").permitAll()
                             .requestMatchers(HttpMethod.POST,"/user/register").permitAll()
+                            .requestMatchers("/posts/admin/api/").hasRole("ADMIN")
                             .anyRequest().authenticated())
                             .addFilter(authenticationFilter)
                             .addFilterAfter(new JWTAuthorizationFilter(),AuthenticationFilter.class)
