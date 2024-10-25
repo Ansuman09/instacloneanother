@@ -3,11 +3,14 @@ package com.api.instaclone.web;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.instaclone.entity.Comment;
+import com.api.instaclone.entity.User;
 import com.api.instaclone.service.CommentService;
+import com.api.instaclone.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +30,19 @@ public class CommentController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    UserService userService;
+
+    public final User getUserFromJWT(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user= userService.getUser(username);
+        return user;
+    }
+
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addComment(@RequestBody Comment comment) {
+        User visitor = getUserFromJWT();
+        comment.setUsr_id(visitor.getUsr_id());
         commentService.addComment(comment);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
