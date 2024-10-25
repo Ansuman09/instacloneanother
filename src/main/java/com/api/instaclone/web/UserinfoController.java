@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 // import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.instaclone.entity.User;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 // import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -65,4 +69,13 @@ public class UserinfoController {
         Userinfo userinfo = userInfoServiceImpl.getUserinfo(name,id);
         return new ResponseEntity<>(userinfo,HttpStatus.OK);
     }
+
+    @GetMapping("/image")
+    public ResponseEntity<Userinfo> getMethodName() {
+        String username=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        //gets userimage file name and username
+        Userinfo visitorUserinfo=userInfoServiceImpl.getUserinfoImageByName(username);
+        return new ResponseEntity<>(visitorUserinfo, HttpStatus.OK);
+    }
+    
 }

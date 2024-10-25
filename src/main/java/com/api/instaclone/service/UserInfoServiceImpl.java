@@ -29,4 +29,9 @@ public class UserInfoServiceImpl implements UserInfoService{
     public Userinfo getUserinfo(String name, int id) {
         return userInfoRepository.getUserinfo(name,id);
     }
+
+    @Override
+    public Userinfo getUserinfoImageByName(String username) {
+        return userInfoRepository.getUserinfoImageByName(username);
+    }
 }

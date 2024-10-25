@@ -32,4 +32,9 @@ public class Userinfo {
         this.profile_image=image_url;
         this.is_following=is_following;
     }
+
+    public Userinfo(String name,String image_url){
+        this.username=name;
+        this.profile_image=image_url;
+    }
 }
