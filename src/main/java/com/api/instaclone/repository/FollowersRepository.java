@@ -38,6 +38,7 @@ public class FollowersRepository {
             preparedStatement.setInt(2, followers.getUsr_id());
 
             preparedStatement.executeUpdate();
+            connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -54,6 +55,7 @@ public class FollowersRepository {
             preparedStatement.setInt(2, followers.getUsr_id());
 
             preparedStatement.execute();
+            connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -78,7 +80,7 @@ public class FollowersRepository {
                 users.add(user);
                 // System.out.println("\n executed to add follower");
             }
-        
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -105,7 +107,7 @@ public class FollowersRepository {
                 users.add(user);
                 // System.out.println("\n executed to add follower");
             }
-        
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }

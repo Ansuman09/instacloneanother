@@ -45,6 +45,7 @@ public class UserRepository {
                 // String email = resultSet.getString("email");
                 user = new User(id,username,password);
             }
+        connection.close();
         System.out.println("Found the user: " +user.getUsername()+" "+user.getPassword());
         }catch (SQLException e){
             e.printStackTrace();
@@ -66,6 +67,7 @@ public class UserRepository {
                 int userid= resultSet.getInt("usr_id");
                 user = new User(userid);
             }
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -83,6 +85,7 @@ public class UserRepository {
             preparedStatement.setString(3,user.getPassword());
 
             preparedStatement.executeUpdate();
+            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }

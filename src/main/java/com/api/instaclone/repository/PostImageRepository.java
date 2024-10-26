@@ -67,9 +67,11 @@ public class PostImageRepository {
                 postImages.add(postImage);
 
             }
+            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
+
         return postImages;
     }
 
@@ -89,6 +91,7 @@ public class PostImageRepository {
                 image= new PostImage(post_id,imageName);
                 System.out.printf("Got image with post id %d  name %s", post_id,imageName);
             }
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }

@@ -44,6 +44,7 @@ public class UserInfoRepository {
                 
                 userinfo = new Userinfo(userid,username,profileimage);
             }
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -68,6 +69,7 @@ public class UserInfoRepository {
                 
                 userinfo = new Userinfo(userid,username,profileimage);
             }
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -135,9 +137,12 @@ public class UserInfoRepository {
                 
                 userinfo = new Userinfo(username,profileimage);
             }
+
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
+
         return userinfo;
     }
 
@@ -164,6 +169,7 @@ public class UserInfoRepository {
                 }
                 userinfos.add(userinfo);
             }
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }

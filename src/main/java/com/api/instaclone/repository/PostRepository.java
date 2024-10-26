@@ -85,7 +85,7 @@ public class PostRepository {
                     posts.add(post);
                 }
 
-                
+            connection.close();
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -160,7 +160,7 @@ public class PostRepository {
 
                     posts.add(post);
                 }
-                
+            connection.close();   
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -190,6 +190,7 @@ public class PostRepository {
                     Post post = new Post(post_id,owner_id,description,userinfo,hasLiked,listOfActions,comments);
                     posts.add(post);
                     }
+            connection.close();
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -231,7 +232,7 @@ public class PostRepository {
             preparedStatementForImages.executeUpdate();
             connection.commit();
             
-                
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -247,7 +248,7 @@ public class PostRepository {
             Connection connection = connect();
 
             PreparedStatement preparedStatement= connection.prepareStatement(sql);
-            preparedStatement.setString(0, searchStr);
+            preparedStatement.setString(1, "%"+searchStr+"%");
 
             ResultSet resultSet= preparedStatement.executeQuery();
 
@@ -255,12 +256,14 @@ public class PostRepository {
                 int post_id=resultSet.getInt("post_id");
                 int owner_id=resultSet.getInt("owner_id");
                 PostImage image=postImageService.getPostImageByPostId(post_id);
-                Userinfo userinfo=userInfoService.getUserinfo(owner_id);
+                Userinfo userinfo=userInfoService.getUserinfo(owner_id);    
+
                 
                 Post post=new Post(post_id,userinfo,image);                
                 
                 posts.add(post);
             }
+        connection.close();
         }catch(Exception e){
             e.printStackTrace();
         }

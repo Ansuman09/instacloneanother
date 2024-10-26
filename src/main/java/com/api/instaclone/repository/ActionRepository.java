@@ -50,7 +50,7 @@ public class ActionRepository {
 
                     actions.add(action);
                 }
-
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -78,6 +78,7 @@ public class ActionRepository {
                 Action action = new Action(postId,actionType,userInfo);
                 listOfActionsOnPost.add(action);
             } 
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -100,6 +101,7 @@ public class ActionRepository {
             if (resultSet.next()){
                 hasLiked=true;
             }
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -134,6 +136,7 @@ public class ActionRepository {
             preparedStatement.setString(3, action.getAction());
 
             preparedStatement.executeUpdate();
+        connection.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }

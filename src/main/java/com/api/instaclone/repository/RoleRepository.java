@@ -47,7 +47,7 @@ public class RoleRepository {
                 // System.out.println("db roles:: " + role.getRole());
                 roles.add(role);
             }
-            
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }

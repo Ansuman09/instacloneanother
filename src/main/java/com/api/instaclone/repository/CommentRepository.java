@@ -41,6 +41,7 @@ public class CommentRepository {
             preparedStatement.setInt(2,comment.getUsr_id());
             preparedStatement.setString(3, comment.getComment());
             preparedStatement.execute();
+            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -66,6 +67,7 @@ public class CommentRepository {
             Comment comment = new Comment(comment_id,post_id,usr_id,statement,userinfo);
             comments.add(comment);
         }
+        connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -85,6 +87,7 @@ public class CommentRepository {
 
         preparedStatement.executeUpdate();
         comment=new Comment(id,new_comment);
+        connection.close();
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -100,6 +103,7 @@ public class CommentRepository {
             preparedStatement.setInt(1,id);
 
             preparedStatement.executeUpdate();
+            connection.close();
         }catch (SQLException e){
             e.printStackTrace();
         }
