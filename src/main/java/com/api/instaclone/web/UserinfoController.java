@@ -6,20 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 // import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.instaclone.entity.User;
 import com.api.instaclone.entity.Userinfo;
 import com.api.instaclone.service.UserInfoServiceImpl;
+import com.api.instaclone.service.UserService;
 import com.api.instaclone.service.UserServiceImpl;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-// import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -37,6 +36,14 @@ public class UserinfoController {
 
     @Autowired
     UserServiceImpl userServiceImpl;
+
+    @Autowired
+    UserService userService;
+
+    public final String getUserNameFromJWT(){
+        String name = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return name;
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Userinfo> getUserInfo(@PathVariable int id) {
@@ -57,10 +64,10 @@ public class UserinfoController {
         // System.out.printf("user id is %d",user);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
-    @GetMapping("/all/{searchString}/{visitorId}")
-    public ResponseEntity<List<Userinfo>> getSearchedUserinfo(@PathVariable String searchString,@PathVariable int visitorId){
-        System.out.println("called all userinfo");
-        List<Userinfo> userinfos = userInfoServiceImpl.getSearchedUserinfo(searchString,visitorId);
+    @GetMapping("/all/{searchString}")
+    public ResponseEntity<List<Userinfo>> getSearchedUserinfo(@PathVariable String searchString){
+        User visitorId = userService.getUserid(searchString);
+        List<Userinfo> userinfos = userInfoServiceImpl.getSearchedUserinfo(searchString,visitorId.getUsr_id());
         return new ResponseEntity<>(userinfos,HttpStatus.OK);
     }
     

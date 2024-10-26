@@ -9,4 +9,5 @@ public interface PostService {
     List<Post> getFollowingPosts(int id);    
     void addPost(Post post,String imageName);
     List<Post> getHomePagePosts(int userProfileId,int visitorId);
+    List<Post> getPostsBySearchString(String searchStr);
 } 

@@ -34,4 +34,10 @@ public class PostServiceImpl implements PostService{
     public List<Post> getHomePagePosts(int userProfileId,int visitorId) {
         return postRepository.getHomePagePosts(userProfileId,visitorId);
     }
+
+    @Override
+    public List<Post> getPostsBySearchString(String searchStr) {
+        
+        return postRepository.getPostsBySearchingDescripition(searchStr);
+    }
 }

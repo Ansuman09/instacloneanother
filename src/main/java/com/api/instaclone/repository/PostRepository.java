@@ -238,5 +238,34 @@ public class PostRepository {
       
     }
 
+    public List<Post> getPostsBySearchingDescripition(String searchStr){
+        String sql= "SELECT * FROM posts WHERE description LIKE ?";
+        List<Post> posts=new ArrayList<Post>();
+        
+        
+        try{
+            Connection connection = connect();
+
+            PreparedStatement preparedStatement= connection.prepareStatement(sql);
+            preparedStatement.setString(0, searchStr);
+
+            ResultSet resultSet= preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                int post_id=resultSet.getInt("post_id");
+                int owner_id=resultSet.getInt("owner_id");
+                PostImage image=postImageService.getPostImageByPostId(post_id);
+                Userinfo userinfo=userInfoService.getUserinfo(owner_id);
+                
+                Post post=new Post(post_id,userinfo,image);                
+                
+                posts.add(post);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
 
 }

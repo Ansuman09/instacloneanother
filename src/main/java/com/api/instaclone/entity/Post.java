@@ -62,10 +62,19 @@ public class Post {
         this.actions=actions;
         this.comments=comments;
     }
+
     public Post(int post_id,int owner_id,String description){
         this.post_id=post_id;
         this.owner_id=owner_id;
         this.description=description;
+        // this.upload_date=upload_date;
+        
+    }
+
+    public Post(int post_id,Userinfo userinfo,PostImage postImage){
+        this.post_id=post_id;
+        this.userinfo=userinfo;
+        this.image=postImage;
         // this.upload_date=upload_date;
         
     }

@@ -80,6 +80,12 @@ public class PostController {
         return new ResponseEntity<>(posts,HttpStatus.OK);
     }
     
+    @GetMapping("/home/search/{postquery}")
+    public ResponseEntity<List<Post>> getSearchResultByPostDescripition(@PathVariable String postquery) {
+        List<Post> posts=postService.getPostsBySearchString(postquery);
+        return new ResponseEntity<>(posts,HttpStatus.OK);
+    }
+    
     
 
     @PostMapping("/addpost")
