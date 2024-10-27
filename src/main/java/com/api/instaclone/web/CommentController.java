@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 
-@CrossOrigin(origins = "http://localhost:3000",methods = {RequestMethod.PUT})
 @RestController
 @RequestMapping("/comment")
 public class CommentController {

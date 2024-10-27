@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 
-@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/followers")
 public class FollowersController {
