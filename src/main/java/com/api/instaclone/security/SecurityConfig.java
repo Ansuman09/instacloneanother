@@ -71,8 +71,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        List<String> origins = Arrays.asList(allowedOrigins.split(","));
-        config.setAllowedOrigins(origins); // Allow requestst from this origin
+        // List<String> origins = Arrays.asList(allowedOrigins.split(","));
+        // config.setAllowedOrigins(origins); // Allow requestst from this origin
+        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://my-frontend:3000", "http://172.21.0.4:3000"));
         config.setAllowedHeaders(Arrays.asList("*")); // Allow all headers
         config.setAllowedMethods(Arrays.asList("*")); // Allow all methods
         config.setAllowCredentials(true); // Allow all HTTP methods

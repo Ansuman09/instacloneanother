@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.api.instaclone.entity.Followers;
@@ -15,8 +16,10 @@ import com.api.instaclone.entity.Userinfo;
 
 @Repository
 public class FollowersRepository {
-        
-    private String JdbcURL = "jdbc:mysql://172.17.0.2:3306/test";
+
+    @Value("${myapp.deployment.backend.sql}")
+    private String JdbcURL;
+    
     private String username = "root";
     private String password = "qwerty11";
 

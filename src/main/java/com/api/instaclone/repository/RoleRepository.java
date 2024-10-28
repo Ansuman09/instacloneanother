@@ -13,13 +13,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.api.instaclone.entity.Role;
 import com.api.instaclone.service.UserService;
 
 @Repository
 public class RoleRepository {
-    private String JdbcURL = "jdbc:mysql://172.17.0.2:3306/test";
+    
+    @Value("${myapp.deployment.backend.sql}")
+    private String JdbcURL;
+    
     private String username = "root";
     private String password = "qwerty11";
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 // import org.apache.tomcat.util.openssl.pem_password_cb;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 // import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,9 @@ import com.api.instaclone.service.UserInfoService;
 @Repository
 public class ActionRepository {
     
-    private String JdbcURL = "jdbc:mysql://172.17.0.2:3306/test";
+    @Value("${myapp.deployment.backend.sql}")
+    private String JdbcURL;
+    
     private String username = "root";
     private String password = "qwerty11";
 

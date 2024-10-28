@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.api.instaclone.entity.User;
@@ -14,7 +15,9 @@ import com.api.instaclone.entity.User;
 @Repository
 public class UserRepository {
 
-    private String JdbcURL = "jdbc:mysql://172.17.0.2:3306/test";
+    @Value("${myapp.deployment.backend.sql}")
+    private String JdbcURL;
+    
     private String username = "root";
     private String password = "qwerty11";
 

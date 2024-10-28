@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ImageController {
 
     
-    private final Path imageDirectory = Paths.get("/home/ansuman/Documents/InstaImageBucket/");
+    private final Path imageDirectory = Paths.get("/app/filebuket");
 
     @GetMapping("/images/{fileName}")
     public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
