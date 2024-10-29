@@ -26,7 +26,7 @@ public class ImageController {
 
     
     private final Path imageDirectory = Paths.get("/app/filebuket");
-
+    
     @GetMapping("/images/{fileName}")
     public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
         try {

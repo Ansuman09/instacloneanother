@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - target:/app/filebuket  
+      - /home/ansuman/Documents/dockerimg_bucket:/app/filebuket  
     networks:
       - web_dev_bridge
 
@@ -34,8 +34,7 @@ services:
       - web_dev_bridge  # Connect to the custom bridge network
     ports:
       - "3000:3000" 
-volumes:
-  target:  # Declare the named volume
+
 
 networks:
   web_dev_bridge:  # Declare the custom bridge network
