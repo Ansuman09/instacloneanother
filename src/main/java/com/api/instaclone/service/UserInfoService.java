@@ -9,4 +9,5 @@ public interface UserInfoService {
     List<Userinfo> getSearchedUserinfo(String searchString,int visiotorId);
     Userinfo getUserinfo(String name,int id);
     Userinfo getUserinfoImageByName(String username);
+    void updateUserinfoUpdateName(Userinfo user,String username);
 }

@@ -179,4 +179,19 @@ public class UserInfoRepository {
 
         return userinfos;
     }
+
+    public void updateUserinfoUpdateName(Userinfo user,String oldName){
+        String sql = "UPDATE userinfo SET username=? where username=?";
+        
+        try {
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,user.getUsername());
+            preparedStatement.setString(2, oldName);
+
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
