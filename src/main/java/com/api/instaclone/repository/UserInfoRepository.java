@@ -181,7 +181,7 @@ public class UserInfoRepository {
     }
 
     public void updateUserinfoUpdateName(Userinfo user,String oldName){
-        String sql = "UPDATE userinfo SET username=? where username=?";
+        String sql = "UPDATE users SET username=? where username=?";
         
         try {
             Connection connection = connect();
@@ -194,4 +194,20 @@ public class UserInfoRepository {
             e.printStackTrace();
         }
     }
+
+    public void updateUserinfoUpdateImage(String username,String imageName){
+        String sql = "UPDATE userinfo SET profile_image=? where username=?";
+        
+        try {
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,imageName);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -1,5 +1,10 @@
 package com.api.instaclone.web;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.api.instaclone.entity.Post;
 import com.api.instaclone.entity.User;
 import com.api.instaclone.entity.Userinfo;
 import com.api.instaclone.service.UserInfoServiceImpl;
@@ -20,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -32,7 +40,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/userinfo")
 public class UserinfoController {
-    
+    private static final String UPLOAD_DIR = "/home/ansuman/Documents/InstaImageBucket";
+
     @Autowired
     UserInfoServiceImpl userInfoServiceImpl;
 
@@ -94,4 +103,32 @@ public class UserinfoController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @PostMapping("/update/image")
+    public ResponseEntity<HttpStatus> postAddPost(
+        @RequestPart("image") MultipartFile imageFile) {
+        
+        String principalUser=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        System.out.println("Got image");
+        File directory = new File(UPLOAD_DIR);
+
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String originalFileName = imageFile.getOriginalFilename();
+        String newFileName = System.currentTimeMillis() + "_" + originalFileName;
+        Path filePath = Paths.get(UPLOAD_DIR, newFileName);
+
+        try {
+            Files.copy(imageFile.getInputStream(), filePath);
+            userInfoServiceImpl.updateUserinfoUpdateImage(principalUser,newFileName);
+
+
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    return new ResponseEntity<>(HttpStatus.CREATED);
+}
+
 }

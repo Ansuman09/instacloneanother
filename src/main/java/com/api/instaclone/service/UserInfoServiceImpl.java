@@ -39,4 +39,9 @@ public class UserInfoServiceImpl implements UserInfoService{
     public void updateUserinfoUpdateName(Userinfo user, String username) {
         userInfoRepository.updateUserinfoUpdateName(user, username);
     }
+
+    @Override
+    public void updateUserinfoUpdateImage(String username, String imageName) {
+        userInfoRepository.updateUserinfoUpdateImage(username, imageName);
+    }
 }
