@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - /home/ansuman/Documents/InstaImageBucket:/app/filebuket  
+      - user/machine/folder:/app/filebuket  
     networks:
       - web_dev_bridge
 
