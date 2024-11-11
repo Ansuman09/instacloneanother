@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 // import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/userinfo")
 public class UserinfoController {
-    private static final String UPLOAD_DIR = "/home/ansuman/Documents/InstaImageBucket";
 
+    @Value("${myapp.deployment.bucket}")
+    private String UPLOAD_DIR;
+   
+   
     @Autowired
     UserInfoServiceImpl userInfoServiceImpl;
 
@@ -109,7 +113,7 @@ public class UserinfoController {
         
         String principalUser=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         System.out.println("Got image");
-        File directory = new File(UPLOAD_DIR);
+        File directory = new File(this.UPLOAD_DIR);
 
         if (!directory.exists()) {
             directory.mkdirs();
@@ -117,7 +121,7 @@ public class UserinfoController {
 
         String originalFileName = imageFile.getOriginalFilename();
         String newFileName = System.currentTimeMillis() + "_" + originalFileName;
-        Path filePath = Paths.get(UPLOAD_DIR, newFileName);
+        Path filePath = Paths.get(this.UPLOAD_DIR, newFileName);
 
         try {
             Files.copy(imageFile.getInputStream(), filePath);

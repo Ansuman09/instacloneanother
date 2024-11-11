@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ImageController {
 
     
-    private final Path imageDirectory = Paths.get("/home/ansuman/Documents/InstaImageBucket");
+    @Value("${myapp.deployment.bucket}")
+    private String UPLOAD_DIR;
+
     
     @GetMapping("/images/{fileName}")
     public ResponseEntity<Resource> serveImage(@PathVariable String fileName) {
         try {
+            Path imageDirectory = Paths.get(this.UPLOAD_DIR);
+    
             Path filePath = imageDirectory.resolve(fileName);
             Resource resource = new UrlResource(filePath.toUri());
 

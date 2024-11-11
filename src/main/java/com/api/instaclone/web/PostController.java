@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +36,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-    private static final String UPLOAD_DIR = "/home/ansuman/Documents/InstaImageBucket";
+    @Value("${myapp.deployment.bucket}")
+    private String UPLOAD_DIR;
 
     @Autowired
     PostService postService;

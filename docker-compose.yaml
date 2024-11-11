@@ -2,38 +2,31 @@ version: '3'
 
 services:
   mybackend:
+    image: instaclone-backend-img
     container_name: my-backend
-    build: 
-      context: .
-      dockerfile: Dockerfile
     volumes:
-      - user/machine/folder:/app/filebuket  
+      - /home/ansuman/Documents/docker-buckets/insta-bucket:/app/filebucket  
     networks:
       - web_dev_bridge
 
 
   mysql:
-    image: mysql:8.4.0 
+    image: testsql-web-img
     container_name: testsql-web 
-    environment:
-      MYSQL_ROOT_PASSWORD: qwerty11  # Set the root password
-      MYSQL_DATABASE: test  # Optional: create a default database
-      MYSQL_USER: user  # Optional: create a user
-      MYSQL_PASSWORD: userpassword  # Optional: user password
     ports:
       - "3306:3306"  # Map MySQL port
     networks:
       - web_dev_bridge  # Connect to the custom bridge network
 
-  frontend:
-    container_name: my-frontend
-    build:
-      context: /home/ansuman/Documents/my-frontend  # Path to your frontend Dockerfile
-      dockerfile: Dockerfile
-    networks:
-      - web_dev_bridge  # Connect to the custom bridge network
-    ports:
-      - "3000:3000" 
+  # frontend:
+  #   container_name: my-frontend
+  #   build:
+  #     context: /home/ansuman/Documents/my-frontend  # Path to your frontend Dockerfile
+  #     dockerfile: Dockerfile
+  #   networks:
+  #     - web_dev_bridge  # Connect to the custom bridge network
+  #   ports:
+  #     - "3000:3000" 
 
 
 networks:
