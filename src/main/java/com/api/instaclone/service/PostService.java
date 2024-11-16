@@ -10,4 +10,5 @@ public interface PostService {
     void addPost(Post post,String imageName);
     List<Post> getHomePagePosts(int userProfileId,int visitorId);
     List<Post> getPostsBySearchString(String searchStr);
+    void deletePost(int post_id);
 } 

@@ -273,5 +273,17 @@ public class PostRepository {
         return posts;
     }
 
+    public void deletePost(int post_id){
 
+        try{
+            Connection connection=connect();
+            String sql="DELETE FROM posts WHERE post_id=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, post_id);
+
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

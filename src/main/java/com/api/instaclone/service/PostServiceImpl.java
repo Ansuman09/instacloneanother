@@ -40,4 +40,9 @@ public class PostServiceImpl implements PostService{
         
         return postRepository.getPostsBySearchingDescripition(searchStr);
     }
+
+    @Override
+    public void deletePost(int post_id) {
+        postRepository.deletePost(post_id);
+    }
 }

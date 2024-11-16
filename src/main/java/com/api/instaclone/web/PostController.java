@@ -121,8 +121,8 @@ public class PostController {
     return new ResponseEntity<>(HttpStatus.CREATED);
 }
 
-    @GetMapping("/admin/api")
-    public ResponseEntity<String> getTestMethod() {
+    @PostMapping("/delete/{post_id}")
+    public ResponseEntity<String> deletePost(@PathVariable int post_id) {
         Collection<String> authorities=SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
         .map(authority->authority.getAuthority().toString()).collect(Collectors.toList());
 
@@ -136,7 +136,8 @@ public class PostController {
         }
         String statement="Hy this is admin";
         if (isAdmin){
-        return new ResponseEntity<>(statement,HttpStatus.OK);
+            postService.deletePost(post_id);
+        return new ResponseEntity<>(statement,HttpStatus.ACCEPTED);
         }
         else{
             return new ResponseEntity<>("you are not admin",HttpStatus.FORBIDDEN);

@@ -49,7 +49,7 @@ public class ActionRepository {
                     String action_type = resultSet.getString("action");
 
 
-                    Action action = new Action(post_id,user_id,action_type);
+                    Action action = new Action(user_id,post_id,action_type);
 
                     actions.add(action);
                 }
