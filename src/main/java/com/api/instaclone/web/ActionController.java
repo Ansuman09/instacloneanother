@@ -1,9 +1,12 @@
 package com.api.instaclone.web;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,5 +66,24 @@ public class ActionController {
         return new ResponseEntity<>(newAction,HttpStatus.CREATED);
     }
     
-    
+    @DeleteMapping("/delete/{post_id}/{user_id}")
+    public ResponseEntity<HttpStatus> postMethodName(@PathVariable int post_id,@PathVariable int user_id) {
+        Collection<String> authorities=SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+        .map(authority->authority.getAuthority().toString()).collect(Collectors.toList());
+
+        boolean isAdmin=false;
+        for (var authority:authorities){
+            System.out.println(authority);
+            if (authority.equals("ROLE_ADMIN")){
+                System.out.println("confirmed user is admin");
+                isAdmin=true;
+            }
+        }
+        if (isAdmin){
+            actionService.deleteAction(post_id,user_id);
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }    
 }
