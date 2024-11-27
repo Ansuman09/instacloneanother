@@ -1,5 +1,7 @@
 package com.api.instaclone.entity;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Followers {
+public class Followers implements Serializable{
     int following_id;
     int usr_id;
     

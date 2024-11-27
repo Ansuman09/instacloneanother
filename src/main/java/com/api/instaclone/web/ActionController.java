@@ -86,4 +86,11 @@ public class ActionController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }    
+
+    @PostMapping("/queue/useraction/{operation}")
+    public ResponseEntity<String> post(@RequestBody Action action,@PathVariable String operation) {
+        actionService.messageSender(action,operation);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 }

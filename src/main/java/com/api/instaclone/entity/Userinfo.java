@@ -1,5 +1,6 @@
 package com.api.instaclone.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
@@ -13,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Userinfo {
+public class Userinfo implements Serializable{
     int userid;
     String username;
     String profile_image;

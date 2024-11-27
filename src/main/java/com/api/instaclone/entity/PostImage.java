@@ -1,5 +1,7 @@
 package com.api.instaclone.entity;
 
+import java.io.Serializable;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostImage {
+public class PostImage implements Serializable{
     
     String imageName;
     int post_id;

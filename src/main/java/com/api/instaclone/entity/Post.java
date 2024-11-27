@@ -1,5 +1,6 @@
 package com.api.instaclone.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+public class Post implements Serializable{
     int post_id;
     int owner_id;
     String description;

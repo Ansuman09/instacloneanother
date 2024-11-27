@@ -1,5 +1,7 @@
 package com.api.instaclone.entity;
 
+import java.io.Serializable;
+
 // import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Component
-public class User {
+public class User implements Serializable{
     
     int usr_id ;
     String username;
