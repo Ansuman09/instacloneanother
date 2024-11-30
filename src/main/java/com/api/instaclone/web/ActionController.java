@@ -89,7 +89,10 @@ public class ActionController {
 
     @PostMapping("/queue/useraction/{operation}")
     public ResponseEntity<String> post(@RequestBody Action action,@PathVariable String operation) {
+        User owner = getUserInfoFromJWT();
+        action.setUser_id(owner.getUsr_id());
         actionService.messageSender(action,operation);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

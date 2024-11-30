@@ -60,7 +60,14 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-
+    @PostMapping("/queue/{operation}")
+    public ResponseEntity<HttpStatus> passBodyToQueue(@RequestBody Comment comment,@PathVariable String operation) {
+        User user = getUserFromJWT();
+        comment.setUsr_id(user.getUsr_id());
+        commentService.sendCommentToQueue(comment, operation);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
 
 
 

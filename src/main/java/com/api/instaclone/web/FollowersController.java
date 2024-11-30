@@ -36,13 +36,19 @@ public class FollowersController {
 
     @PostMapping("add")
     public ResponseEntity<HttpStatus> updateFollowers (@RequestBody Followers followers) {
-        followersService.updateFollowers(followers);
+        String username=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User owner=userService.getUser(username);
+        followers.setUsr_id(owner.getUsr_id());
+        followersService.sendFollowMessageToQueue(followers, "follow");;
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @DeleteMapping("delete")
     public ResponseEntity<HttpStatus> deleteFollowers (@RequestBody Followers followers){
-        followersService.deleteFollowers(followers);
+        String username=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User owner=userService.getUser(username);
+        followers.setUsr_id(owner.getUsr_id());
+        followersService.sendFollowMessageToQueue(followers, "unfollow");;
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
     

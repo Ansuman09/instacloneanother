@@ -14,8 +14,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.instaclone.configs.RabbitConfig;
 import com.api.instaclone.entity.Action;
 import com.api.instaclone.repository.ActionRepository;
+import com.api.instaclone.repository.SerializerDeserializer;
 
 
 @Service
@@ -61,15 +63,9 @@ public class ActionServiceImpl implements ActionService{
 
         
         try{
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-
-            objectOutputStream.writeObject(action);
-            byte[] messageBytes= byteArrayOutputStream.toByteArray();
+            byte[] messageBytes= SerializerDeserializer.serializeObject(action);
             Message msg = new Message(messageBytes,props);
-
-            objectOutputStream.close();
-            rabbitTemplate.send("action",msg);
+            rabbitTemplate.send(RabbitConfig.TOPIC_EXCHANGE,"clone.apricot.actions",msg);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -78,19 +74,26 @@ public class ActionServiceImpl implements ActionService{
     }
 
     @Override
-    @RabbitListener(queues = "action")
+    @RabbitListener(queues = "actions")
     public void messageReceiver(Message message) {
         MessageProperties messageProperties= message.getMessageProperties();
-        String headerset=messageProperties.getHeader("operation");
+        String operation=messageProperties.getHeader("operation");
         byte[] data = message.getBody();
+        Action action = new Action();
         try{
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
-            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
-
-            Action action = (Action) objectInputStream.readObject();
-            System.out.printf("User %s liked post wit post id %d and header is %s",action.getUsername(),action.getPost_id(),headerset);
+        
+            action = (Action) SerializerDeserializer.deserializeObject(data);
+            System.out.printf("User %d liked post wit post id %d and header is %s",action.getUser_id(),action.getPost_id(),operation);
+            if (operation.equals("addLike")){
+                this.addAction(action);   
+            }else if (operation.equals("unlike")){
+                this.deleteAction(action.getPost_id(),action.getUser_id());
+            }
         }catch(Exception e){
             e.printStackTrace();
         }
+
+
+        
     }
 }

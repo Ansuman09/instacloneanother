@@ -86,9 +86,10 @@ public class UserinfoController {
         return new ResponseEntity<>(userinfos,HttpStatus.OK);
     }
     
-    @GetMapping("/{name}/{id}")
-    public ResponseEntity<Userinfo> getUserInfo(@PathVariable String name,@PathVariable int id) {
-        Userinfo userinfo = userInfoServiceImpl.getUserinfo(name,id);
+    @GetMapping("/info/{name}")
+    public ResponseEntity<Userinfo> getUserInfo(@PathVariable String name) {
+        User user=userService.getUser(getUserNameFromJWT());
+        Userinfo userinfo = userInfoServiceImpl.getUserinfo(name,user.getUsr_id());
         return new ResponseEntity<>(userinfo,HttpStatus.OK);
     }
 
