@@ -18,16 +18,16 @@ services:
     networks:
       - web_dev_bridge  # Connect to the custom bridge network
 
-  # frontend:
-  #   container_name: my-frontend
-  #   build:
-  #     context: /home/ansuman/Documents/my-frontend  # Path to your frontend Dockerfile
-  #     dockerfile: Dockerfile
-  #   networks:
-  #     - web_dev_bridge  # Connect to the custom bridge network
-  #   ports:
-  #     - "3000:3000" 
-
-
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq-web
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "user"
+      RABBITMQ_DEFAULT_PASS: "password"
+    networks:
+      - web_dev_bridge
 networks:
   web_dev_bridge:  # Declare the custom bridge network

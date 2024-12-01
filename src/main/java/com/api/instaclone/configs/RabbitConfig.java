@@ -66,7 +66,7 @@ public class RabbitConfig {
     
     @Bean
     public Binding bindFollows(){
-        return BindingBuilder.bind(followQueue()).to(topicExchange()).with(LOGS_ROUTING_KEY);
+        return BindingBuilder.bind(followQueue()).to(topicExchange()).with(FOLLOWER_ROUTING_KEY);
     }
 
 }
