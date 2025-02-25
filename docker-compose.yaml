@@ -4,8 +4,10 @@ services:
   mybackend:
     image: instaclone-backend-img
     container_name: my-backend
+    ports:
+      - "8080:8080"
     volumes:
-      - /home/ansuman/Documents/docker-buckets/insta-bucket:/app/filebucket  
+      - /c/Users/Ansuman Samal/Documents/insta-bucket:/app/filebucket  
     networks:
       - web_dev_bridge
 
