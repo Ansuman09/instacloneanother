@@ -11,4 +11,5 @@ public interface UserInfoService {
     Userinfo getUserinfoImageByName(String username);
     void updateUserinfoUpdateName(Userinfo user,String username);
     void updateUserinfoUpdateImage(String username,String imageName);
+    List<Userinfo> getTrendingUsers();
 }

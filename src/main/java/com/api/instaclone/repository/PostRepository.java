@@ -172,7 +172,7 @@ public class PostRepository {
 
     public List<Post> getHomePagePosts(int userProfileId,int visitorId){
         List<Post> posts= new ArrayList<>();
-        String sql = "SELECT * FROM posts WHERE owner_id=?";
+        String sql = "SELECT posts.*, COUNT(action.action) as action_count FROM posts LEFT JOIN action ON posts.post_id = action.post_id WHERE owner_id=? GROUP BY posts.post_id;";
         System.out.println("called home posts");       
         try(Connection connection = connect();
             
@@ -185,12 +185,13 @@ public class PostRepository {
                     int post_id = resultSet.getInt("post_id");
                     int owner_id = resultSet.getInt("owner_id");
                     String description = resultSet.getString("description");
-                    Userinfo userinfo = userInfoService.getUserinfo(owner_id);
-                    List<Action> listOfActions = actionService.getActionByPostId(post_id);
+                    Userinfo ownerUserinfo = userInfoService.getUserinfo(owner_id);
+                    List<Action> likes = actionService.getActionByPostId(post_id);
                     Boolean hasLiked= actionService.userHasLikedPost(visitorId, post_id);
                     List<Comment> comments = commentService.getCommentByPost(post_id);
-                    
-                    Post post = new Post(post_id,owner_id,description,userinfo,hasLiked,listOfActions,comments);
+                    PostImage image = postImageService.getPostImageByPostId(post_id);
+                    // Integer likes= resultSet.getInt("action_count");
+                    Post post = new Post(post_id,owner_id,image,description,ownerUserinfo,hasLiked,likes,comments);
                     posts.add(post);
                     }
             connection.close();
@@ -285,5 +286,30 @@ public class PostRepository {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public Post getPostById(int cur_post_id){
+
+        String sql = "SELECT * FROM posts WHERE post_id=?";
+
+        try{
+            
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, cur_post_id);
+            
+            ResultSet resultSet = preparedStatement.executeQuery();if (resultSet.next()) {
+                int post_id = resultSet.getInt("post_id");
+                int owner_id = resultSet.getInt("owner_id");
+                String description = resultSet.getString("description");
+                Userinfo userinfo = userInfoService.getUserinfo(owner_id);
+                
+                return new Post(post_id, owner_id, description, userinfo);
+            }
+        connection.close();
+        }catch( SQLException e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 // import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class CustomAuthenticationManager implements AuthenticationManager{
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         User user = userService.getUser(authentication.getPrincipal().toString());
         System.out.println("\n--------------------"+authentication.getPrincipal());
-        if (!user.getPassword().equals(authentication.getCredentials().toString())){
+        if (!BCrypt.checkpw(authentication.getCredentials().toString(),user.getPassword())){
             throw new BadCredentialsException("You have provided wrong pass");
         }
 

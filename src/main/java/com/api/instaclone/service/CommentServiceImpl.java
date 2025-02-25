@@ -79,7 +79,10 @@ public class CommentServiceImpl implements CommentService{
             System.out.printf("User %d commented on  post with post id %d and header is %s",comment.getUsr_id(),comment.getPost_id(),operation);
             if (operation.equals("addComment")){
                 this.addComment(comment);   
-            }else if (operation.equals("deleteComment")){
+            }else if (operation.equals("editComment") ){
+                commentRepository.updateCommentByCommentId(comment.getComment(),comment.getComment_id());
+            }
+            else if (operation.equals("deleteComment")){
                 // this.deleteAction(action.getPost_id(),action.getUser_id());
             }
         }catch(Exception e){

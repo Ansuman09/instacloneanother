@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Repository;
 
 import com.api.instaclone.entity.User;
@@ -32,7 +33,7 @@ public class UserRepository {
 
     public User getUser(String name){
         String sql = "SELECT * FROM users WHERE username=?";
-        
+        User user=null;
         try{    
             Connection connection = connect();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -47,9 +48,11 @@ public class UserRepository {
                 String password = resultSet.getString("password");
                 // String email = resultSet.getString("email");
                 user = new User(id,username,password);
+                
+                System.out.println("Found the user: " +user.getUsername()+" "+user.getPassword());
             }
+        
         connection.close();
-        System.out.println("Found the user: " +user.getUsername()+" "+user.getPassword());
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -80,12 +83,13 @@ public class UserRepository {
     public void addUser(User user){
         String sql = "INSERT INTO users(username,email,password) VALUES(?,?,?)";
         System.out.printf("this registers user %s", user.getUsername());
+        String newPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         try{
             Connection connection = connect();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2,user.getEmail());
-            preparedStatement.setString(3,user.getPassword());
+            preparedStatement.setString(3,newPassword);
 
             preparedStatement.executeUpdate();
             connection.close();

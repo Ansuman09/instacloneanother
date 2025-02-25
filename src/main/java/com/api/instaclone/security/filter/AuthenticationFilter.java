@@ -13,7 +13,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.api.instaclone.entity.User;
-import com.api.instaclone.repository.RoleRepository;
 import com.api.instaclone.security.manager.CustomAuthenticationManager;
 import com.api.instaclone.service.RoleService;
 import com.auth0.jwt.JWT;

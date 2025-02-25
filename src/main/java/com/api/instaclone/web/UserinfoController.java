@@ -108,6 +108,12 @@ public class UserinfoController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @GetMapping("/trending/all")
+    public ResponseEntity<List<Userinfo>> getTrendingUsers() {
+    List<Userinfo> users = userInfoServiceImpl.getTrendingUsers();
+    return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
     @PostMapping("/update/image")
     public ResponseEntity<HttpStatus> postAddPost(
         @RequestPart("image") MultipartFile imageFile) {

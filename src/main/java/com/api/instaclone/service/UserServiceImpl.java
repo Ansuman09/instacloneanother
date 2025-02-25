@@ -24,7 +24,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addUser(User user) {
-        userRepository.addUser(user);
+    public String addUser(User user) {
+        User existingUser = userRepository.getUser(user.getUsername());
+        if (existingUser==null){
+            userRepository.addUser(user);
+            return "added";
+        }else{
+            return "exists";
+        }
     }
 }
