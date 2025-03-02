@@ -52,7 +52,7 @@ CREATE TABLE `comments` (
   KEY `usr_id` (`usr_id`),
   CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
   CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`usr_id`) REFERENCES `users` (`usr_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +70,34 @@ CREATE TABLE `followers` (
   CONSTRAINT `followers_ibfk_3` FOREIGN KEY (`following_id`) REFERENCES `users` (`usr_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `followers_ibfk_4` FOREIGN KEY (`usr_id`) REFERENCES `users` (`usr_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `notification_table`
+--
+
+DROP TABLE IF EXISTS `notification_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification_table` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `uname` varchar(50) NOT NULL,
+  `action` varchar(30) NOT NULL,
+  `count` int NOT NULL,
+  `actinguser` varchar(50) NOT NULL,
+  `status` varchar(30) DEFAULT 'unread',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `message` varchar(200) DEFAULT NULL,
+  `post_id` int DEFAULT '-1',
+  PRIMARY KEY (`id`),
+  KEY `uname` (`uname`),
+  KEY `actinguser` (`actinguser`),
+  KEY `fk_notify_post_id` (`post_id`),
+  CONSTRAINT `fk_notify_post_id` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  CONSTRAINT `notification_table_ibfk_1` FOREIGN KEY (`uname`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `notification_table_ibfk_2` FOREIGN KEY (`actinguser`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +131,7 @@ CREATE TABLE `posts` (
   PRIMARY KEY (`post_id`),
   KEY `owner_id` (`owner_id`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `users` (`usr_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +161,7 @@ DROP TABLE IF EXISTS `userinfo`;
 CREATE TABLE `userinfo` (
   `userid` int NOT NULL,
   `username` varchar(20) DEFAULT NULL,
-  `profile_image` varchar(300) DEFAULT 'default-avatar.jpg',
+  `profile_image` varchar(300) DEFAULT NULL,
   `created_date` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`userid`),
   KEY `fk_username` (`username`),
@@ -157,7 +185,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`usr_id`),
   UNIQUE KEY `unique_username` (`username`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -170,7 +198,7 @@ CREATE TABLE `users` (
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `add_userinfo` AFTER INSERT ON `users` FOR EACH ROW BEGIN
     INSERT INTO userinfo (userid, username, profile_image)
-    VALUES (NEW.usr_id, NEW.username, 'defaultimg');
+    VALUES (NEW.usr_id, NEW.username, 'defaultimg.png');
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -187,4 +215,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-11  1:27:20
+-- Dump completed on 2025-02-25 20:02:49

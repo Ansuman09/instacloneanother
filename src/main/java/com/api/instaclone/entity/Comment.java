@@ -43,5 +43,5 @@ public class Comment implements Serializable{
     public Comment(int comment_id,String comment){
         this.comment_id=comment_id;
         this.comment=comment;
-    }
+    }   
 }

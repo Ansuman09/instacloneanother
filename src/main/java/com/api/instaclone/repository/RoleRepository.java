@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.api.instaclone.entity.Role;
+import com.api.instaclone.entity.User;
 import com.api.instaclone.service.UserService;
 
 @Repository
@@ -60,4 +61,34 @@ public class RoleRepository {
 
     return authorities;
     }    
+
+    public void addRole(User user){
+        String sql = "INSERT INTO roles (username,role) values(?,?)";
+
+        try(Connection connection=connect()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,user.getUsername());
+            preparedStatement.setString(2,"RW_USER");
+
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
+
+    
+    public void editRole(User user,String role){
+        String sql = " UPDATE roles SET role=? WHERE username=?;";
+
+        try(Connection connection=connect()){
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(2,user.getUsername());
+            preparedStatement.setString(1,role);
+
+            preparedStatement.executeUpdate();
+            System.out.printf("Changed user %s role to %s",user.getUsername(),role);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+    }
 }

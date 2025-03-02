@@ -19,8 +19,11 @@ public class UserInfoRepository {
     @Value("${myapp.deployment.backend.sql}")
     private String JdbcURL;
 
-    private String username = "root";
-    private String password = "qwerty11";
+    // @Value("${myapp.deployment.backend.sql.username}")
+    private String username="root";
+
+    // @Value("${myapp.deployment.backend.sql.password}")
+    private String password="qwerty11";
 
     public Connection connect() throws SQLException {
         return DriverManager.getConnection(this.JdbcURL, this.username, this.password);

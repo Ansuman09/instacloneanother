@@ -42,4 +42,8 @@ public class User implements Serializable{
     public User(int id){
         this.usr_id=id;
     }
+
+    public User(String username){
+        this.username=username;
+    }
 }

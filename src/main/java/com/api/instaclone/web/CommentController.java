@@ -2,10 +2,13 @@ package com.api.instaclone.web;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.api.instaclone.entity.Comment;
 import com.api.instaclone.entity.User;
 import com.api.instaclone.service.CommentService;
 import com.api.instaclone.service.UserService;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -68,7 +72,12 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @GetMapping("/by/post/{id}")
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Integer id){
+        List<Comment> comments = commentService.getCommentByPost(id);
 
+        return new ResponseEntity<>(comments,HttpStatus.OK);
+    }
 
 
 
