@@ -27,6 +27,7 @@ public class CustomAuthenticationManager implements AuthenticationManager{
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         User user = userService.getUser(authentication.getPrincipal().toString());
         System.out.println("\n--------------------"+authentication.getPrincipal());
+        
         if (!BCrypt.checkpw(authentication.getCredentials().toString(),user.getPassword())){
             throw new BadCredentialsException("You have provided wrong pass");
         }

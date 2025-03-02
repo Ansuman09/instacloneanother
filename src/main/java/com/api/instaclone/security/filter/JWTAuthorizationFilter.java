@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-// import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter{
+    
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -46,6 +46,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter{
         for (var authority:authorities){
             System.out.println(authority.getAuthority().toString());
         }
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(userName, null,authorities);
         System.out.println("check "+authentication.isAuthenticated());
         SecurityContextHolder.getContext().setAuthentication(authentication);
