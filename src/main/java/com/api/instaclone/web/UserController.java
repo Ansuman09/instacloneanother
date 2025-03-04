@@ -3,12 +3,16 @@ package com.api.instaclone.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+import com.api.instaclone.entity.Role;
 import com.api.instaclone.entity.User;
 import com.api.instaclone.service.RoleService;
 import com.api.instaclone.service.UserService;
@@ -38,12 +42,17 @@ public class UserController {
         }
     }
     
-    @PostMapping("/change/role/{new_role}")
-    public ResponseEntity<String> postMethodName(@RequestBody User user,@PathVariable String new_role) {
-        roleService.updateRole(user,new_role);
+    @PostMapping("/change/role")
+    public ResponseEntity<String> updateRole(@RequestBody User user) {
+        roleService.updateRole(user);
         
         return new ResponseEntity<>("Changed user role",HttpStatus.OK);
     }
     
+    @GetMapping("/roles/by/{username}")
+    public ResponseEntity<List<Role>> getRoleFromUsername(@PathVariable String username){
+        List<Role> roles=roleService.getAllRolesFromUsername(username);
+        return new ResponseEntity(roles,HttpStatus.OK);
+    }
     
 }

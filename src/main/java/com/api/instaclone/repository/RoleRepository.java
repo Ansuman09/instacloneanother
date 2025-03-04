@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -77,16 +79,26 @@ public class RoleRepository {
     }
 
     
-    public void editRole(User user,String role){
-        String sql = " UPDATE roles SET role=? WHERE username=?;";
+    public void editRole(User user){
+        String sql = " INSERT INTO roles (username,role)  values(?,?);";
+        String deleteSql="DELETE FROM roles WHERE username=?";
+        List<String> roles=user.getRoles();
 
         try(Connection connection=connect()){
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(2,user.getUsername());
-            preparedStatement.setString(1,role);
-
-            preparedStatement.executeUpdate();
-            System.out.printf("Changed user %s role to %s",user.getUsername(),role);
+            PreparedStatement preparedStatementToDelete = connection.prepareStatement(deleteSql);
+            preparedStatementToDelete.setString(1, user.getUsername());
+            preparedStatementToDelete.executeUpdate();
+            for (String role:roles){
+                System.out.printf("\n --- role ---- %s-- \n",role);
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1,user.getUsername());
+                preparedStatement.setString(2,role);
+    
+                preparedStatement.executeUpdate();
+    
+            }
+            
+            System.out.printf("Changed user %s roles",user.getUsername());
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -94,4 +106,25 @@ public class RoleRepository {
         
     }
 
+
+    
+    public List<Role> getRoleObjByUsername(String username){
+    String sql = "SELECT * FROM roles WHERE username=?";
+    List<Role> roles=new ArrayList();
+    try{
+        Connection connection = connect();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1,username);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()){
+            Role role=new Role(resultSet.getString("username"),resultSet.getString("role"));
+            roles.add(role);
+        }
+        
+    } catch (SQLException e){
+        e.printStackTrace();
+    }
+    return roles;
+    }
 }

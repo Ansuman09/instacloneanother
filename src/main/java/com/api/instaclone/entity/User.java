@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,7 +23,8 @@ public class User implements Serializable{
     String username;
     String password;
     String email;
-    
+    List<String> roles;
+
     public User(String username, String password){
         this.username=username;
         this.password=password;
@@ -43,7 +46,7 @@ public class User implements Serializable{
         this.usr_id=id;
     }
 
-    public User(String username){
+    public User(String username,List<String> roles){
         this.username=username;
     }
 }
