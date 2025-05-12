@@ -1,6 +1,11 @@
 # instacloneanother
+##see demo hosted on web
+url: https://ubiq.aquilacoder.com
+username: user
+password: password@123
+*It is hosted as demo so no new users are allowed to sign up.
 
-##Steps to deploy.
+## steps to deploy on a machine
 Install docker and docker compose on you machine.
 
 Use the Docker file to create the images as mentioned in the file.

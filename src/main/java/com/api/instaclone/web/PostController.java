@@ -121,6 +121,14 @@ public class PostController {
     return new ResponseEntity<>(HttpStatus.CREATED);
 }
 
+    @PostMapping("/delete/post/{post_id}")
+    public ResponseEntity<String> deletePostForUser(@PathVariable int post_id) {
+        String principalUser=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        postService.deletePost(post_id);
+        return new ResponseEntity<>("Deleted user post",HttpStatus.OK);
+    }
+
+
     @PostMapping("/delete/{post_id}")
     public ResponseEntity<String> deletePost(@PathVariable int post_id) {
         Collection<String> authorities=SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
@@ -129,7 +137,7 @@ public class PostController {
         boolean isAdmin=false;
         for (var authority:authorities){
             System.out.println(authority);
-            if (authority.equals("ROLE_ADMIN")){
+            if (authority.equals("ROLE_ROLES_MANAGER")){
                 System.out.println("confirmed user is admin");
                 isAdmin=true;
             }
