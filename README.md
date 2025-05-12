@@ -1,5 +1,5 @@
 # instacloneanother
-## ee demo hosted on web
+## see demo hosted on web
 url: https://ubiq.aquilacoder.com
 
 
