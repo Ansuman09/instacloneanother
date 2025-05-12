@@ -1,8 +1,11 @@
 # instacloneanother
-##see demo hosted on web
+## ee demo hosted on web
 url: https://ubiq.aquilacoder.com
+
+
 username: user
 password: password@123
+
 *It is hosted as demo so no new users are allowed to sign up.
 
 ## steps to deploy on a machine
