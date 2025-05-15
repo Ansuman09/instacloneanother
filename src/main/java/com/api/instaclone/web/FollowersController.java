@@ -85,4 +85,6 @@ public class FollowersController {
         List<Userinfo> users= followersService.getAllFollowingById(owner.getUsr_id());
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
+
+    
 }
