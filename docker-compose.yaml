@@ -1,15 +1,15 @@
 version: '3'
 
 services:
-  mybackend:
-    image: instaclone-backend-img
-    container_name: my-backend
-    ports:
-      - "8080:8080"
-    volumes:
-      - /c/Users/Ansuman Samal/Documents/insta-bucket:/app/filebucket  
-    networks:
-      - web_dev_bridge
+  # mybackend:
+  #   image: instaclone-backend-img
+  #   container_name: my-backend
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - /c/Users/ansum/Documents/instaclone/insta-bucket:/app/filebucket  
+  #   networks:
+  #     - web_dev_bridge
 
 
   mysql:

@@ -86,7 +86,7 @@ public class NotificationRepository {
             Post post = getPostById(notification.getPost_id());
             notification.setUname(post.getUserinfo().getUsername());
         } else {
-            notification.setPost_id(45);
+            notification.setPost_id(60); //fix issue where notification can not be sent or updated without postid
         }
 
         String messageStatement = "notification";
@@ -137,6 +137,7 @@ public class NotificationRepository {
                 notification.setId(resultSet.getInt("id"));
                 notification.setActinguser(resultSet.getString("actinguser"));
                 notification.setMessage(resultSet.getString("message"));
+                notification.setAction(resultSet.getString("action"));
                 notification.setStatus(resultSet.getString("status"));
                 notifications.add(notification);
             }
@@ -162,4 +163,37 @@ public class NotificationRepository {
         }
     }
     
+
+    public void deleteNotificationById(Notification notification){
+        String str = "DELETE FROM `notification_table` WHERE id=?";
+        try{
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(str);
+            preparedStatement.setInt(1, notification.getId());
+            
+            preparedStatement.executeUpdate();
+            
+            connection.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteNotificationByUnameActionANDActingUser(Notification notification){
+         String str = "DELETE FROM notification_table WHERE uname=? AND action=? AND actinguser=?";
+        try{
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(str);
+            preparedStatement.setString(1, notification.getUname());
+            preparedStatement.setString(2,notification.getAction());
+            preparedStatement.setString(3,notification.getActinguser());
+            preparedStatement.executeUpdate();
+            
+            connection.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+    
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.instaclone.entity.User;
 import com.api.instaclone.entity.Userinfo;
 import com.api.instaclone.repository.UserInfoRepository;
 
@@ -26,8 +27,8 @@ public class UserInfoServiceImpl implements UserInfoService{
     }
 
     @Override
-    public Userinfo getUserinfo(String name, int id) {
-        return userInfoRepository.getUserinfo(name,id);
+    public Userinfo getUserinfo(String name, User user) {
+        return userInfoRepository.getUserinfo(name,user);
     }
 
     @Override
@@ -48,5 +49,16 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public List<Userinfo> getTrendingUsers(){
         return userInfoRepository.getTrendingUsers();
+    }
+    
+    @Override
+    public void toggleUserAccountPrivateByName(String username, String privateAccount) {
+        userInfoRepository.toggleUserAccountPrivateByName(username, privateAccount);
+    }
+
+    @Override
+    public Userinfo getUserinfoByName(String username) {
+        Userinfo userinfo=userInfoRepository.getUserinfoByName(username);
+        return userinfo;
     }
 }

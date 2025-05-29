@@ -10,8 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.api.instaclone.entity.Notification;
 import com.api.instaclone.entity.User;
@@ -53,4 +53,11 @@ public class NotificationController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
     
+    @PostMapping("/delete/follow-request")
+    public ResponseEntity<String> deleteFollowRequest(@RequestBody Notification notification) {
+        notificationService.deleteNotificationByID(notification);
+        String responseStr = new String().format("follow request rejected for %s",notification.getActinguser());
+        return new ResponseEntity<>(responseStr,HttpStatus.OK);
+    }
+
 }

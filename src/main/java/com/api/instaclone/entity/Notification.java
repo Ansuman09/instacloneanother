@@ -39,4 +39,8 @@ public class Notification implements Serializable {
         this.actinguser = actinguser;
     }
 
+    @Override
+    public String toString() {
+        return new String().format("uname %s,acting user %s,String message %s and action %s",this.uname,this.actinguser,this.message,this.action);
+    }
 }

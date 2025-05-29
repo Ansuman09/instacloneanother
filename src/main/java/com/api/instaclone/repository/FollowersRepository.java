@@ -118,4 +118,7 @@ public class FollowersRepository {
         return users;
     }
 
+    public void updateFollowersByUsername(){
+        
+    }
 }

@@ -89,7 +89,7 @@ public class UserinfoController {
     @GetMapping("/info/{name}")
     public ResponseEntity<Userinfo> getUserInfo(@PathVariable String name) {
         User user=userService.getUser(getUserNameFromJWT());
-        Userinfo userinfo = userInfoServiceImpl.getUserinfo(name,user.getUsr_id());
+        Userinfo userinfo = userInfoServiceImpl.getUserinfo(name,user);
         return new ResponseEntity<>(userinfo,HttpStatus.OK);
     }
 
@@ -97,7 +97,7 @@ public class UserinfoController {
     public ResponseEntity<Userinfo> getMethodName() {
         String username=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         //gets userimage file name and username
-        Userinfo visitorUserinfo=userInfoServiceImpl.getUserinfoImageByName(username);
+        Userinfo visitorUserinfo=userInfoServiceImpl.getUserinfoByName(username);
         return new ResponseEntity<>(visitorUserinfo, HttpStatus.OK);
     }
     
@@ -142,4 +142,13 @@ public class UserinfoController {
     return new ResponseEntity<>(HttpStatus.CREATED);
 }
 
+    @PostMapping("/toggle/private/{status}")
+    public ResponseEntity<HttpStatus> togglePrivateAccount(@PathVariable String status){
+        User user=userService.getUser(getUserNameFromJWT());
+        // Userinfo userinfo/ = userInfoServiceImpl.getUserinfoByName(user.getUsername());
+        // if (userinfo.get)
+        userInfoServiceImpl.toggleUserAccountPrivateByName(user.getUsername(), status);
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 }

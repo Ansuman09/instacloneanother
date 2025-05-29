@@ -18,4 +18,5 @@ public class Followers implements Serializable{
     public  Followers(int following_id){
         this.following_id=following_id;
     }
+
 }

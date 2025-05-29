@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.instaclone.entity.Followers;
+import com.api.instaclone.entity.Notification;
 import com.api.instaclone.entity.User;
 import com.api.instaclone.entity.Userinfo;
 import com.api.instaclone.service.FollowersService;
+import com.api.instaclone.service.NotificationService;
 import com.api.instaclone.service.UserService;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +36,9 @@ public class FollowersController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    NotificationService notificationService;
+    
     @PostMapping("add")
     public ResponseEntity<HttpStatus> updateFollowers (@RequestBody Followers followers) {
         String username=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
@@ -86,5 +91,45 @@ public class FollowersController {
         return new ResponseEntity<>(users,HttpStatus.OK);
     }
 
+    @PostMapping("/request")
+    public ResponseEntity<String> requestFollowById(@RequestBody Followers followers){
+        String username=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User owner=userService.getUser(username);
+        followers.setUsr_id(owner.getUsr_id());
+        followersService.sendFollowMessageToQueue(followers, "follow-request");
+        System.out.printf("Controller reads %d\n",followers.getFollowing_id());
+        return new ResponseEntity<>("Follow Request Sent",HttpStatus.OK);
+    }
+
+
+    @PostMapping("/acceptFollow")
+    public ResponseEntity<String> requestFollowById(@RequestBody Notification notification){
+        ///Gets follower and user ids and sets up following;
+        User followingOn=userService.getUser(notification.getUname());
+        User owner=userService.getUser(notification.getActinguser());
+
+        Followers followers = new Followers();
+        followers.setUsr_id(owner.getUsr_id());
+        followers.setFollowing_id(followingOn.getUsr_id());
+        followersService.sendFollowMessageToQueue(followers,"follow");
+        notificationService.deleteNotificationByID(notification);
+        // System.out.printf("Controller reads %d\n",followers.getFollowing_id());
+        return new ResponseEntity<>("Follow Request Sent",HttpStatus.OK);
+    }
     
+    
+    @PostMapping("/delete/follow-request/{username}")
+    public ResponseEntity<String> deleteFollowRequestByName(@PathVariable String username){
+        ///Gets follower and user ids and sets up following;
+        String actingUserName=SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        
+        Notification notification= new Notification();
+        notification.setActinguser(actingUserName);
+        notification.setAction("follow-request");
+        notification.setUname(username);
+
+        notificationService.deleteNotificationByUnameActionANDActingUser(notification);
+        // System.out.printf("Controller reads %d\n",followers.getFollowing_id());
+        return new ResponseEntity<>("Follow Request Sent",HttpStatus.OK);
+    }
 }

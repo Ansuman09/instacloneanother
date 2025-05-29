@@ -2,6 +2,7 @@ package com.api.instaclone.service;
 
 import java.util.List;
 
+import org.apache.tomcat.util.digester.SystemPropertySource;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
@@ -82,6 +83,9 @@ public class FollowerServiceImpl implements FollowersService{
                 this.updateFollowers(followers);   
             }else if (operation.equals("unfollow")){
                 this.deleteFollowers(followers);
+            }else if (operation.equals("follow-request")){
+                //Notification service processes follow
+                System.out.printf("follow request sent to user %d from user %d\n",followers.getFollowing_id(),followers.getUsr_id());
             }
         }catch(Exception e){
             e.printStackTrace();

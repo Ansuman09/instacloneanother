@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import com.api.instaclone.entity.User;
 import com.api.instaclone.entity.Userinfo;
 
 @Repository
@@ -91,8 +92,8 @@ public class UserInfoRepository {
                 Integer userid = resultSet.getInt("userid");
                 String username = resultSet.getString("username");
                 String profileimage = resultSet.getString("profile_image");
-
-                userinfo = new Userinfo(userid, username, profileimage);
+                String privateAccount= resultSet.getString("private");
+                userinfo = new Userinfo(userid, username, profileimage,privateAccount);
             }
             connection.close();
         } catch (SQLException e) {
@@ -101,10 +102,11 @@ public class UserInfoRepository {
         return userinfo;
     }
 
-    public Userinfo getUserinfo(String name, int visitorId) {
+    public Userinfo getUserinfo(String name, User visitor) {
         Userinfo userinfo = null; // Initialize as null
         String sql = "SELECT * FROM userinfo WHERE username=?";
         String checkfollowing = "SELECT * FROM followers WHERE usr_id=?";
+        int visitorId= visitor.getUsr_id();
         try {
             Connection connection = connect();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -118,6 +120,7 @@ public class UserInfoRepository {
                 String profileimage = resultSet.getString("profile_image");
 
                 boolean is_following = false; // Reset for each user
+                String private_account=resultSet.getString("private");
 
                 preparedStatementToCheckFollowing.setInt(1, visitorId);
                 ResultSet resultSetToCheckFollowing = preparedStatementToCheckFollowing.executeQuery();
@@ -130,7 +133,9 @@ public class UserInfoRepository {
                     }
                 }
 
-                userinfo = new Userinfo(userid, username, profileimage, is_following);
+                //Check if request pending
+                Boolean requestStatus=getFollowRequestStatus(visitor.getUsername(),resultSet.getString("username"));
+                userinfo = new Userinfo(userid, username, profileimage, is_following,private_account,requestStatus);
                 resultSetToCheckFollowing.close();
             }
 
@@ -231,4 +236,41 @@ public class UserInfoRepository {
         }
     }
 
+    private boolean getFollowRequestStatus(String actingUser,String uname){
+        String sql = "SELECT * FROM notification_table WHERE action=? AND actinguser=? AND uname=?";
+
+        try {
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, "follow-request");
+            preparedStatement.setString(2, actingUser);
+            preparedStatement.setString(3,uname);
+
+
+            ResultSet resultSet=preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void toggleUserAccountPrivateByName(String username,String privateAccount){
+        String sql = "UPDATE userinfo SET private=? where username=?";
+
+        try {
+            Connection connection = connect();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, privateAccount);
+            preparedStatement.setString(2, username);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

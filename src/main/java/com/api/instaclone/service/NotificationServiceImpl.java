@@ -83,6 +83,16 @@ public class NotificationServiceImpl implements NotificationService{
                 // System.out.println("Captured comment\n");
                 notificationRepository.addNotification(notification);
 
+            }else if (operation.equals("follow-request")){
+                Followers followers = (Followers) SerializerDeserializer.deserializeObject(data);
+                
+                Userinfo actingUser = userInfoService.getUserinfo(followers.getUsr_id());
+                Userinfo user = userInfoService.getUserinfo(followers.getFollowing_id());
+                
+                // Userinfo user = userInfoService.getUserinfo(comment.getUsr_id());
+                Notification notification = new Notification(user.getUsername(), "follow-request", 1, actingUser.getUsername());
+                System.out.println(notification.toString());
+                notificationRepository.addNotification(notification);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -147,4 +157,14 @@ public class NotificationServiceImpl implements NotificationService{
         
     }
 
+    //delete notification used for accept/delete follow request
+    @Override
+    public void deleteNotificationByID(Notification notification) {
+        notificationRepository.deleteNotificationById(notification);
+    }
+
+    @Override
+    public void deleteNotificationByUnameActionANDActingUser(Notification notification){
+        notificationRepository.deleteNotificationByUnameActionANDActingUser(notification);
+    }
 }
